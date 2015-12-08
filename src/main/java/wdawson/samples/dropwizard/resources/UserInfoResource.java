@@ -2,9 +2,14 @@ package wdawson.samples.dropwizard.resources;
 
 import com.codahale.metrics.annotation.Timed;
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.base.Preconditions;
+import io.dropwizard.auth.Auth;
 import wdawson.samples.dropwizard.api.UserInfo;
+import wdawson.samples.dropwizard.auth.Role;
+import wdawson.samples.dropwizard.auth.User;
 import wdawson.samples.dropwizard.util.resources.ResourceUtils;
 
+import javax.annotation.security.RolesAllowed;
 import javax.validation.constraints.Min;
 import javax.ws.rs.GET;
 import javax.ws.rs.NotFoundException;
@@ -39,7 +44,11 @@ public class UserInfoResource {
     @GET
     @Path(("/{id}"))
     @Timed
-    public UserInfo getUser(@Min(1) @PathParam("id") long id) {
+    @RolesAllowed(Role.USER_READ_ONLY)
+    public UserInfo getUser(@Min(1) @PathParam("id") long id,
+                            @Auth User user) {
+        Preconditions.checkArgument(user.getId().equals(String.valueOf(id)));
+
         if (id > names.size()) {
             throw new NotFoundException("User with id=" + id + " was not found");
         }
@@ -55,6 +64,7 @@ public class UserInfoResource {
      */
     @GET
     @Timed
+    @RolesAllowed(Role.ADMIN)
     public List<UserInfo> getUsers() {
         List<UserInfo> result = new LinkedList<>();
         for (int i = 1; i <= names.size(); ++i) {

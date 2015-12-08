@@ -11,6 +11,8 @@
     <properties>
         <!-- Dependency Versions -->
         <io.dropwizard.version>0.9.1</io.dropwizard.version>
+        <jersey.version>2.21</jersey.version>
+        <org.bouncycastle.version>1.50</org.bouncycastle.version>
 
         <!-- Plugin Versions -->
         <maven-compiler-plugin.version>3.3</maven-compiler-plugin.version>
@@ -28,6 +30,7 @@
         <!-- Other properties -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
     </properties>
 
     <dependencies>
@@ -35,6 +38,31 @@
             <groupId>io.dropwizard</groupId>
             <artifactId>dropwizard-core</artifactId>
             <version>${io.dropwizard.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.dropwizard</groupId>
+            <artifactId>dropwizard-auth</artifactId>
+            <version>${io.dropwizard.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>18.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcprov-jdk15on</artifactId>
+            <version>${org.bouncycastle.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcpkix-jdk15on</artifactId>
+            <version>${org.bouncycastle.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.nimbusds</groupId>
+            <artifactId>nimbus-jose-jwt</artifactId>
+            <version>2.25</version>
         </dependency>
 
         <!-- Test Dependencies -->
@@ -48,6 +76,12 @@
             <groupId>io.dropwizard</groupId>
             <artifactId>dropwizard-client</artifactId>
             <version>${io.dropwizard.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jersey.test-framework.providers</groupId>
+            <artifactId>jersey-test-framework-provider-grizzly2</artifactId>
+            <version>${jersey.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

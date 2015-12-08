@@ -13,3 +13,41 @@ logging:
     - type: console
 
 namesResource: users/names.txt
+
+security:
+  jwtVerification:
+    allowedSignerDnRegex: "^CN=dev.homepageservice.okta.com(,.*|\\s*)$"
+    certificateCacheExpireTime: 60m
+    certificateRevocationChecking: ENABLED
+    # Trusted root certificates. While this only contains the public key of the Okta Root CA, this setting is sensitive
+    # because it controls trust. If an attacker can add to this list they can mint their own JWTs that are trusted by
+    # this service. Scrutinize changes to this value and ensure permissions are set accordingly.
+    #
+    # To gracefully rotate our root cert supply both the old and new cert values here till we've completely phased out
+    # all the token providers to this service.
+    trustedRootCaCertificates:
+      # http://ca.okta.com/Okta-Root-CA.crt May 31 01:02:36 2014 GMT - May 28 01:02:36 2024 GMT
+      - |
+        -----BEGIN CERTIFICATE-----
+        MIID3DCCAsSgAwIBAgIJANjyWvBXr1JBMA0GCSqGSIb3DQEBCwUAMFgxCzAJBgNV
+        BAYTAlVTMRMwEQYDVQQKDApPa3RhLCBJbmMuMR0wGwYDVQQLDBRUZWNobmljYWwg
+        T3BlcmF0aW9uczEVMBMGA1UEAwwMT2t0YSBSb290IENBMB4XDTE0MDUzMTAxMDIz
+        NloXDTI0MDUyODAxMDIzNlowWDELMAkGA1UEBhMCVVMxEzARBgNVBAoMCk9rdGEs
+        IEluYy4xHTAbBgNVBAsMFFRlY2huaWNhbCBPcGVyYXRpb25zMRUwEwYDVQQDDAxP
+        a3RhIFJvb3QgQ0EwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDC4y9K
+        HuKvU7XlqMhSCNvJvSM9mhMTJLbCSqQNDZIYehlFmMRFzzl3THEMmb2wmnt7Xrdf
+        fGB6O1aaSsqY2Zwx/isn7ke/8XmIUXU/iXTNuwoE1SIuE+HqJ1DVwmpSUZjLdCWl
+        6IPjA6j3DNzBhP7oqEnIyJe2FZaFF27lraG3KXJpmPFy0NBoOL9qGSTWLCRvdHMS
+        7CNd6NytHTm68VURboP6KfJUrsYOhsEN4bkBGJhoytHJYbvDG4qnvJKMbHnW25HP
+        EXlaM4751cTCimXBqOrvifWM/Y7K4UxQbbDW7G4bzBtBGD+XK4TMc+LTDU+TYMtr
+        mPcTwOOMYcTXBernAgMBAAGjgagwgaUwHQYDVR0OBBYEFCfROhQTTgqKkLWr9akn
+        YHeFXN7pMB8GA1UdIwQYMBaAFCfROhQTTgqKkLWr9aknYHeFXN7pMAwGA1UdEwQF
+        MAMBAf8wCwYDVR0PBAQDAgEGMBEGCWCGSAGG+EIBAQQEAwIBBjA1BgNVHR8ELjAs
+        MCqgKKAmhiRodHRwOi8vY2RwLm9rdGEuY29tL09rdGEtUm9vdC1DQS5jcmwwDQYJ
+        KoZIhvcNAQELBQADggEBAINiN6gch7sXB8xb+mBubEmGPcuFclbT1nDjcXabG5/4
+        DgeFG0TT+nIsT+kY5Ertj8y3yJiIX2IvlXwrZChNbFDI9cn+WpPqEOVrErGQ5Gho
+        NooNT4oRi0dtXysGW1a2zdhK06zjadPwZD2ZowupMAyAOPjj1FcUyNIwdsxrdDMd
+        VdAinOPTMq7nmll8Vc3YeRYg8LybjWwIHMIG7eNkfQdKq2y94MboXAwPaM/SUOW9
+        fjL99Y8k09FrMOPSCXwH0h9kmASZM83MmixD0OmTNaK3Aql3C1ficLEmgRBotwzV
+        1atXISKRjOVG8w88GyeuG0B/v2/wOX4KehzZ/VOYgYE=
+        -----END CERTIFICATE-----
