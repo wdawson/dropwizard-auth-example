@@ -18,12 +18,25 @@ public class SecurityConfiguration {
     @JsonProperty
     private TLSAuthorizationConfiguration tlsAuthZ;
 
+    @Valid
+    @NotNull
+    @JsonProperty
+    private JwtVerificationConfiguration jwtVerification;
+
     public TLSAuthorizationConfiguration getTlsAuthZ() {
         return tlsAuthZ;
     }
 
     public void setTlsAuthZ(TLSAuthorizationConfiguration tlsAuthZ) {
         this.tlsAuthZ = tlsAuthZ;
+    }
+
+    public JwtVerificationConfiguration getJwtVerification() {
+        return jwtVerification;
+    }
+
+    public void setJwtVerification(JwtVerificationConfiguration jwtVerification) {
+        this.jwtVerification = jwtVerification;
     }
 
     @Override
@@ -35,11 +48,12 @@ public class SecurityConfiguration {
             return false;
         }
         SecurityConfiguration that = (SecurityConfiguration) o;
-        return Objects.equals(tlsAuthZ, that.tlsAuthZ);
+        return Objects.equals(tlsAuthZ, that.tlsAuthZ) &&
+                Objects.equals(jwtVerification, that.jwtVerification);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(tlsAuthZ);
+        return Objects.hash(tlsAuthZ, jwtVerification);
     }
 }

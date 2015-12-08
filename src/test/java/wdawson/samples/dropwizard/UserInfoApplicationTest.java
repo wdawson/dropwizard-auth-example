@@ -7,6 +7,7 @@ import io.dropwizard.jackson.Jackson;
 import io.dropwizard.jersey.setup.JerseyEnvironment;
 import io.dropwizard.setup.Environment;
 import io.dropwizard.validation.BaseValidator;
+import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -19,6 +20,7 @@ import java.io.File;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentCaptor.forClass;
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -54,27 +56,46 @@ public class UserInfoApplicationTest {
     }
 
     @Test
-    public void testThatApplicationRegistersResources() throws Exception {
+    public void testThatApplicationRegistersFilters() {
         // Setup
         ArgumentCaptor<TLSCertificateAuthorizationFilter> tlsAuthZFilterCaptor = forClass(TLSCertificateAuthorizationFilter.class);
+
+        // Exercise
+        userInfoApplication.registerFilters(configuration, environment);
+
+        // Verify
+        verify(jerseyEnvironment).register(tlsAuthZFilterCaptor.capture());
+        TLSCertificateAuthorizationFilter filter = tlsAuthZFilterCaptor.getAllValues().get(0);
+        assertThat(filter.getDnRegex().pattern()).isEqualTo("^.*\\bCN=homepage-service\\b(?:,.*|\\s*)$");
+    }
+
+    @Test
+    public void testThatApplicationRegistersResources() {
+        // Setup
         ArgumentCaptor<UserInfoHealthCheck> userInfoHealthCheckCaptor = forClass(UserInfoHealthCheck.class);
         ArgumentCaptor<UserInfoResource> userInfoResourceCaptor = forClass(UserInfoResource.class);
 
         // Exercise
-        userInfoApplication.run(configuration, environment);
+        userInfoApplication.registerResources(configuration, environment);
 
         // Verify
-        verify(jerseyEnvironment, times(2)).register(tlsAuthZFilterCaptor.capture());
-        TLSCertificateAuthorizationFilter filter = tlsAuthZFilterCaptor.getAllValues().get(0);
-        assertThat(filter.getDnRegex().pattern()).isEqualTo("^.*\\bCN=homepage-service\\b(?:,.*|\\s*)$");
-
         verify(healthCheckRegistry).register(anyString(), userInfoHealthCheckCaptor.capture());
         UserInfoHealthCheck userInfoHealthCheck = userInfoHealthCheckCaptor.getValue();
         assertThat(userInfoHealthCheck.getNamesResource()).isEqualTo("fixtures/users/test-names.txt");
         assertThat(userInfoHealthCheck.getNames()).containsExactly("Jane Doe", "John Doe");
 
-        verify(jerseyEnvironment, times(2)).register(userInfoResourceCaptor.capture());
+        verify(jerseyEnvironment).register(userInfoResourceCaptor.capture());
         UserInfoResource userInfoResource = userInfoResourceCaptor.getValue();
         assertThat(userInfoResource.getNames()).containsExactly("Jane Doe", "John Doe");
+    }
+
+    @Test
+    public void testThatApplicationRegistersUserAuth() {
+        // Exercise
+        userInfoApplication.registerUserAuth(configuration, environment);
+
+        // Verify
+        verify(jerseyEnvironment, times(2)).register(any(Object.class));
+        verify(jerseyEnvironment).register(RolesAllowedDynamicFeature.class);
     }
 }

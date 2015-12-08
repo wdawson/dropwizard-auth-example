@@ -43,7 +43,14 @@ logging:
 
 security:
   tlsAuthZ:
-    dnRegex: "^.*\\bCN=homepage-service\\b(?:,.*|\\s*)$"
+    allowedClientDnRegex: "^.*\\bCN=homepage-service\\b(?:,.*|\\s*)$"
+
+  jwtVerification:
+    allowedSignerDnRegex: "^.*\\bCN=homepage-jwt-issuer\\b(?:,.*|\\s*)$"
+    truststoreResourcePath: "jwt/truststore.jks"
+    truststorePassphrase: "notsecret"
+    truststoreAliases:
+      - "root"
 
 data:
   namesResource: fixtures/users/test-names.txt

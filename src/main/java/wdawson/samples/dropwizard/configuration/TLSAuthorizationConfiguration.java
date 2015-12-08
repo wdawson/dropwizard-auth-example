@@ -14,14 +14,14 @@ public class TLSAuthorizationConfiguration {
 
     @NotEmpty
     @JsonProperty
-    private String dnRegex;
+    private String allowedClientDnRegex;
 
-    public String getDnRegex() {
-        return dnRegex;
+    public String getAllowedClientDnRegex() {
+        return allowedClientDnRegex;
     }
 
-    public void setDnRegex(String dnRegex) {
-        this.dnRegex = dnRegex;
+    public void setAllowedClientDnRegex(String allowedClientDnRegex) {
+        this.allowedClientDnRegex = allowedClientDnRegex;
     }
 
     @Override
@@ -33,11 +33,11 @@ public class TLSAuthorizationConfiguration {
             return false;
         }
         TLSAuthorizationConfiguration that = (TLSAuthorizationConfiguration) o;
-        return Objects.equals(dnRegex, that.dnRegex);
+        return Objects.equals(allowedClientDnRegex, that.allowedClientDnRegex);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(dnRegex);
+        return Objects.hash(allowedClientDnRegex);
     }
 }

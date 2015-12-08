@@ -22,15 +22,23 @@ functionality.
 The application runs on port 8443, with the Dropwizard admin on port 8081.
 
 ## Auth
-This application authenticates via TLS Client Authentication and performs further authentication on the client's
+This application authenticates clients in two ways:
+
+1. It authenticates services via TLS Client Authentication and performs further authentication on the client's
 certificate using the `TLSCertificateAuthorizationFilter`. The authorization is a simple regex match on the certificate
 subject. This could be extended to check additional claims passed in the certificate. Hostname verification is not
 included in this example, but is another option for providing more assurance.
+2. It authorizes users via OAuth 2.0 implemented with JWTs. This example does not authenticate users and instead relies
+on the delegated authorization of the OAuth 2.0 spec to federate the user's identity back to the signer of the JWT (the
+OAuth token).
 
 The application uses certificates issued by an example CA. In order for the application to start, the JVM must trust the
 root CA. In order to accomplish this, the application overrides Java's trustStore at runtime with a custom keystore
 file. The password is "notsecret" should you need to edit it. WARNING: DO NOT MAKE JAVA TRUST THIS STORE BY DEFAULT! The
 CA that's backing this example is not secure for public communication and is meant for demonstration only.
+
+The CA supports both OCSP and CRL and access \[root|intermediate\].example.ca.wilsdawson.com to perform revocation
+checks.
 
 # Running the application
 NOTE: You must install the Unlimited JCE to run the tests!

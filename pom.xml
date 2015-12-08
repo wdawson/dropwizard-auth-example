@@ -11,6 +11,7 @@
     <properties>
         <!-- Dependency Versions -->
         <io.dropwizard.version>0.9.1</io.dropwizard.version>
+        <nimbus-jose-jwt.version>4.11</nimbus-jose-jwt.version>
 
         <!-- Plugin Versions -->
         <maven-compiler-plugin.version>3.3</maven-compiler-plugin.version>
@@ -35,6 +36,16 @@
             <groupId>io.dropwizard</groupId>
             <artifactId>dropwizard-core</artifactId>
             <version>${io.dropwizard.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.dropwizard</groupId>
+            <artifactId>dropwizard-auth</artifactId>
+            <version>${io.dropwizard.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.nimbusds</groupId>
+            <artifactId>nimbus-jose-jwt</artifactId>
+            <version>${nimbus-jose-jwt.version}</version>
         </dependency>
 
         <!-- Test Dependencies -->

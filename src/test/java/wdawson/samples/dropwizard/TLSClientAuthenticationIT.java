@@ -28,6 +28,7 @@ public class TLSClientAuthenticationIT extends IntegrationTest {
         try {
             client.target(String.format("http://localhost:%d/users", 8443))
                     .request()
+                    .header("Authorization", "Bearer " + adminJWT)
                     .get(new GenericType<List<UserInfo>>() {
                     });
             failBecauseExceptionWasNotThrown(ProcessingException.class);
@@ -43,6 +44,7 @@ public class TLSClientAuthenticationIT extends IntegrationTest {
         try {
             client.target(String.format("https://localhost:%d/users", 8443))
                     .request()
+                    .header("Authorization", "Bearer " + adminJWT)
                     .get(new GenericType<List<UserInfo>>() {
                     });
             failBecauseExceptionWasNotThrown(ProcessingException.class);
@@ -58,6 +60,7 @@ public class TLSClientAuthenticationIT extends IntegrationTest {
 
         Response response = client.target(String.format("https://localhost:%d/users", 8443))
                 .request()
+                .header("Authorization", "Bearer " + adminJWT)
                 .get();
 
         assertThat(response.getStatus()).isEqualTo(Response.Status.FORBIDDEN.getStatusCode());
@@ -74,6 +77,7 @@ public class TLSClientAuthenticationIT extends IntegrationTest {
 
         Response response = client.target(String.format("https://localhost:%d/users", 8443))
                 .request()
+                .header("Authorization", "Bearer " + adminJWT)
                 .get();
 
         assertThat(response.getStatus()).isBetween(200, 299);

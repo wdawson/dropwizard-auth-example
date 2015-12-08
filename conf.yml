@@ -43,7 +43,13 @@ logging:
 
 security:
   tlsAuthZ:
-    dnRegex: "^.*\\bCN=homepage-service\\b(?:,.*|\\s*)$"
+    allowedClientDnRegex: "^.*\\bCN=homepage-service\\b(?:,.*|\\s*)$"
 
+  jwtVerification:
+    allowedSignerDnRegex: "^CN=dev.homepageservice.okta.com(,.*|\\s*)$"
+    truststoreResourcePath: "jwt/truststore.jks"
+    truststorePassphrase: "notsecret"
+    truststoreAliases:
+      - "root"
 data:
   namesResource: users/names.txt
