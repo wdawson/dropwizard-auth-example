@@ -1,9 +1,9 @@
 package wdawson.samples.dropwizard.configuration;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.dropwizard.Configuration;
-import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 /**
@@ -13,20 +13,16 @@ import java.util.Objects;
  */
 public class UserInfoConfiguration extends Configuration {
 
-    /**
-     * Resource on the classpath containing names of users
-     */
-    @NotEmpty
-    private String namesResource;
+    @Valid
+    @NotNull
+    private DataConfiguration data;
 
-    @JsonProperty
-    public String getNamesResource() {
-        return namesResource;
+    public DataConfiguration getData() {
+        return data;
     }
 
-    @JsonProperty
-    public void setNamesResource(String names) {
-        this.namesResource = names;
+    public void setData(DataConfiguration data) {
+        this.data = data;
     }
 
     @Override
@@ -38,11 +34,11 @@ public class UserInfoConfiguration extends Configuration {
             return false;
         }
         UserInfoConfiguration that = (UserInfoConfiguration) o;
-        return Objects.equals(namesResource, that.namesResource);
+        return Objects.equals(data, that.data);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(namesResource);
+        return Objects.hash(data);
     }
 }

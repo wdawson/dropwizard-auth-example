@@ -20,7 +20,7 @@ public class UserInfoConfigurationTest {
     public void testThatValidConfigurationIsPopulated() throws Exception {
         final UserInfoConfiguration validConfiguration = buildConfigurationFromString("dropwizard/valid-conf.yml");
 
-        assertThat(validConfiguration.getNamesResource()).isEqualTo("fixtures/users/test-names.txt");
+        assertThat(validConfiguration.getData().getNamesResource()).isEqualTo("fixtures/users/test-names.txt");
     }
 
     @Test(expected = ConfigurationValidationException.class)

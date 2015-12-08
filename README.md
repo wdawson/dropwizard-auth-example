@@ -19,9 +19,19 @@ functionality.
 - `UserInfoApplication` contains the `main` method for the application and is the Application for Dropwizard to execute.
 - The configuration object, `UserInfoConfiguration`, contains various config data needed for the application.
 
-The application runs on port 8080, with the dropwizard admin on port 8081.
+The application runs on port 8443, with the Dropwizard admin on port 8081.
+
+## Auth
+This application authenticates via TLS Client Authentication.
+
+The application uses certificates issued by an example CA. In order for the application to start, the JVM must trust the
+root CA. In order to accomplish this, the application overrides Java's trustStore at runtime with a custom keystore
+file. The password is "notsecret" should you need to edit it. WARNING: DO NOT MAKE JAVA TRUST THIS STORE BY DEFAULT! The
+CA that's backing this example is not secure for public communication and is meant for demonstration only.
 
 # Running the application
+NOTE: You must install the Unlimited JCE to run the tests!
+
 To test the application, run the following commands.
 
 - To package the application, run:
@@ -29,7 +39,7 @@ To test the application, run the following commands.
   ```
   mvn package
   ```
-
+  
 - To run the integration tests, run:
   ```
   mvn verify
@@ -38,19 +48,19 @@ To test the application, run the following commands.
 - To run the server, run:
 
   ```
-  java -jar target/auth-example-0.0.1-SNAPSHOT.jar server conf.yml
+  java -jar target/auth-example-0.1.0-SNAPSHOT.jar server conf.yml
   ```
 
 - To get all the users once the server is up, run:
 
   ```
-  curl http://localhost:8080/users
+  curl http://localhost:8443/users
   ```
 
 - To get the user with an id of `{id}` when the server is up, run:
 
   ```
-  curl http://localhost:8080/users/{id}
+  curl http://localhost:8443/users/{id}
   ```
 
 - To use the admin operational menu, navigate a browser to:

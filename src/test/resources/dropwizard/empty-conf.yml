@@ -12,4 +12,5 @@ logging:
   appenders:
     - type: console
 
-namesResource:
+data:
+  namesResource:

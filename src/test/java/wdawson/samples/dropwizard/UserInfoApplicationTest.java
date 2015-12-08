@@ -49,7 +49,7 @@ public class UserInfoApplicationTest {
         when(environment.healthChecks()).thenReturn(healthCheckRegistry);
         when(environment.jersey()).thenReturn(jerseyEnvironment);
 
-        assertThat(configuration.getNamesResource()).isEqualTo("fixtures/users/test-names.txt");
+        assertThat(configuration.getData().getNamesResource()).isEqualTo("fixtures/users/test-names.txt");
     }
 
     @Test
