@@ -4,6 +4,7 @@ import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import wdawson.samples.dropwizard.configuration.UserInfoConfiguration;
+import wdawson.samples.dropwizard.filters.TLSCertificateAuthorizationFilter;
 import wdawson.samples.dropwizard.health.UserInfoHealthCheck;
 import wdawson.samples.dropwizard.resources.UserInfoResource;
 import wdawson.samples.dropwizard.util.resources.ClasspathURLStreamHandler;
@@ -45,6 +46,13 @@ public class UserInfoApplication extends Application<UserInfoConfiguration> {
         System.setProperty("javax.net.ssl.trustStore", "java-cacerts.jks");
         System.setProperty("javax.net.ssl.trustStorePassword", "notsecret");
 
+        // Register Filters
+        String dnRegex = configuration.getSecurity().getTlsAuthZ().getDnRegex();
+        final TLSCertificateAuthorizationFilter tlsAuthZFilter = new TLSCertificateAuthorizationFilter(dnRegex);
+
+        environment.jersey().register(tlsAuthZFilter);
+
+        // Register Resources
         final UserInfoHealthCheck userInfoHealthCheck = new UserInfoHealthCheck(configuration.getData().getNamesResource());
         final UserInfoResource userInfoResource = new UserInfoResource(configuration.getData().getNamesResource());
 

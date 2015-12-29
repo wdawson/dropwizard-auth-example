@@ -41,5 +41,9 @@ logging:
   appenders:
     - type: console
 
+security:
+  tlsAuthZ:
+    dnRegex: "^.*\\bCN=homepage-service\\b(?:,.*|\\s*)$"
+
 data:
   namesResource: fixtures/users/test-names.txt

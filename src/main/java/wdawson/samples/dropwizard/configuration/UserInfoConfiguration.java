@@ -1,5 +1,6 @@
 package wdawson.samples.dropwizard.configuration;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.dropwizard.Configuration;
 
 import javax.validation.Valid;
@@ -15,7 +16,13 @@ public class UserInfoConfiguration extends Configuration {
 
     @Valid
     @NotNull
+    @JsonProperty
     private DataConfiguration data;
+
+    @Valid
+    @NotNull
+    @JsonProperty
+    private SecurityConfiguration security;
 
     public DataConfiguration getData() {
         return data;
@@ -23,6 +30,14 @@ public class UserInfoConfiguration extends Configuration {
 
     public void setData(DataConfiguration data) {
         this.data = data;
+    }
+
+    public SecurityConfiguration getSecurity() {
+        return security;
+    }
+
+    public void setSecurity(SecurityConfiguration security) {
+        this.security = security;
     }
 
     @Override
@@ -34,11 +49,12 @@ public class UserInfoConfiguration extends Configuration {
             return false;
         }
         UserInfoConfiguration that = (UserInfoConfiguration) o;
-        return Objects.equals(data, that.data);
+        return Objects.equals(data, that.data) &&
+                Objects.equals(security, that.security);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(data);
+        return Objects.hash(data, security);
     }
 }

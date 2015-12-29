@@ -22,7 +22,10 @@ functionality.
 The application runs on port 8443, with the Dropwizard admin on port 8081.
 
 ## Auth
-This application authenticates via TLS Client Authentication.
+This application authenticates via TLS Client Authentication and performs further authentication on the client's
+certificate using the `TLSCertificateAuthorizationFilter`. The authorization is a simple regex match on the certificate
+subject. This could be extended to check additional claims passed in the certificate. Hostname verification is not
+included in this example, but is another option for providing more assurance.
 
 The application uses certificates issued by an example CA. In order for the application to start, the JVM must trust the
 root CA. In order to accomplish this, the application overrides Java's trustStore at runtime with a custom keystore

@@ -6,25 +6,22 @@ import org.hibernate.validator.constraints.NotEmpty;
 import java.util.Objects;
 
 /**
- * Configuration for the data source
+ * Configuration for TLS Authorization
  *
  * @author wdawson
  */
-public class DataConfiguration {
+public class TLSAuthorizationConfiguration {
 
-    /**
-     * Resource on the classpath containing names of users
-     */
     @NotEmpty
     @JsonProperty
-    private String namesResource;
+    private String dnRegex;
 
-    public String getNamesResource() {
-        return namesResource;
+    public String getDnRegex() {
+        return dnRegex;
     }
 
-    public void setNamesResource(String names) {
-        this.namesResource = names;
+    public void setDnRegex(String dnRegex) {
+        this.dnRegex = dnRegex;
     }
 
     @Override
@@ -35,12 +32,12 @@ public class DataConfiguration {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        DataConfiguration that = (DataConfiguration) o;
-        return Objects.equals(namesResource, that.namesResource);
+        TLSAuthorizationConfiguration that = (TLSAuthorizationConfiguration) o;
+        return Objects.equals(dnRegex, that.dnRegex);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(namesResource);
+        return Objects.hash(dnRegex);
     }
 }

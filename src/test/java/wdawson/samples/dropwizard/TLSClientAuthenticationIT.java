@@ -53,6 +53,22 @@ public class TLSClientAuthenticationIT extends IntegrationTest {
     }
 
     @Test
+    public void unauthorizedServiceClientIsRefused() throws Exception {
+        Client client = getNewSecureClient("tls/event-service-keystore.jks");
+
+        Response response = client.target(String.format("https://localhost:%d/users", 8443))
+                .request()
+                .get();
+
+        assertThat(response.getStatus()).isEqualTo(Response.Status.FORBIDDEN.getStatusCode());
+        assertThat(response.hasEntity()).isTrue();
+        String errorMessage = response.readEntity(String.class);
+        assertThat(errorMessage).isEqualTo("Certificate subject is not recognized");
+
+        response.close();
+    }
+
+    @Test
     public void validHttpsClientIsAllowed() throws Exception{
         Client client = getNewSecureClient();
 
