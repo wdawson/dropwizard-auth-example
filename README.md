@@ -6,6 +6,7 @@ The commit history should give an idea of what is needed for each step of authen
 here. The remainder of this README will also change as the git history changes and authentication features are added.
 
 # Overview
+[![Build Status](https://travis-ci.org/wdawson/dropwizard-auth-example.svg?branch=master)](https://travis-ci.org/wdawson/dropwizard-auth-example)
 
 ## What the app does
 The functionality of the application is fairly simple; The application serves information about users. As the backend
