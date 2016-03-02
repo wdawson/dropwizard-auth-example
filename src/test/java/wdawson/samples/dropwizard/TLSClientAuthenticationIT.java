@@ -6,6 +6,7 @@ import org.junit.Test;
 import wdawson.samples.dropwizard.api.UserInfo;
 import wdawson.samples.dropwizard.helpers.IntegrationTest;
 
+import javax.net.ssl.SSLHandshakeException;
 import javax.ws.rs.ProcessingException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.core.GenericType;
