@@ -49,8 +49,17 @@ public class TLSClientAuthenticationIT extends IntegrationTest {
                     });
             failBecauseExceptionWasNotThrown(ProcessingException.class);
         } catch (ProcessingException e) {
-            assertThat(e).hasCauseExactlyInstanceOf(SocketException.class);
-            assertThat(e).hasMessageEndingWith("Connection reset");
+            // cause here can vary from SocketException to SSLHandshakeException
+            Throwable cause = e.getCause();
+            if (cause instanceof SocketException){
+                assertThat(e).hasCauseExactlyInstanceOf(SocketException.class);
+                assertThat(e).hasMessageEndingWith("Connection reset");
+            } else if (cause instanceof SSLHandshakeException) {
+                assertThat(e).hasCauseExactlyInstanceOf(SSLHandshakeException.class);
+                assertThat(e).hasMessageEndingWith("Remote host closed connection during handshake");
+            } else {
+                failBecauseExceptionWasNotThrown(SocketException.class);
+            }
         }
     }
 
