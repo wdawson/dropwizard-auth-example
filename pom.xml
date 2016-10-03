@@ -6,7 +6,7 @@
 
     <groupId>wdawson.samples</groupId>
     <artifactId>dropwizard-auth-example</artifactId>
-    <version>0.1.0-SNAPSHOT</version>
+    <version>0.1.1-SNAPSHOT</version>
 
     <properties>
         <!-- Dependency Versions -->
@@ -60,6 +60,13 @@
             <artifactId>dropwizard-client</artifactId>
             <version>${io.dropwizard.version}</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>wdawson.samples</groupId>
+            <artifactId>revoker</artifactId>
+            <version>0.1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/test/resources/revoker/revoker-0.1.0.jar</systemPath>
         </dependency>
     </dependencies>
 

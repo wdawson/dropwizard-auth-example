@@ -66,7 +66,7 @@ public class UserInfoApplicationTest {
         // Verify
         verify(jerseyEnvironment).register(tlsAuthZFilterCaptor.capture());
         TLSCertificateAuthorizationFilter filter = tlsAuthZFilterCaptor.getAllValues().get(0);
-        assertThat(filter.getDnRegex().pattern()).isEqualTo("^.*\\bCN=homepage-service\\b(?:,.*|\\s*)$");
+        assertThat(filter.getDnRegex().pattern()).isEqualTo("^.*\\bCN=Homepage Service\\b(?:,.*|\\s*)$");
     }
 
     @Test

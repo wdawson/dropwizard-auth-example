@@ -1,0 +1,27 @@
+server:
+  requestLog:
+    timeZone: UTC
+  applicationConnectors:
+    - type: http
+      port: 9001
+
+  adminConnectors:
+    - type: http
+      port: 9901
+
+logging:
+  level: INFO
+  appenders:
+    - type: console
+
+ocspResponder:
+  keyStorePath: src/test/resources/revoker/intermediate.ocsp-signing.jks
+  keyStorePassphrase: "notsecret"
+  keyStoreAlias: "ocsp-signing"
+
+certificateAuthority:
+  caIndexFile: src/test/resources/revoker/example-ca/intermediate/index.txt
+  refreshSeconds: 10
+  crlFiles:
+    - name: "crl.pem"
+      filePath: src/test/resources/revoker/example-ca/intermediate/crl/crl.pem

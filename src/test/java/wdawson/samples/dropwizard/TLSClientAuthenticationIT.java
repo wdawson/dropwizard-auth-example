@@ -24,7 +24,7 @@ public class TLSClientAuthenticationIT extends IntegrationTest {
 
     @Test
     public void httpClientIsRefused() {
-        Client client = new JerseyClientBuilder(RULE.getEnvironment()).build("http client");
+        Client client = new JerseyClientBuilder(USER_INFO_APP_RULE.getEnvironment()).build("http client");
 
         try {
             client.target(String.format("http://localhost:%d/users", 8443))

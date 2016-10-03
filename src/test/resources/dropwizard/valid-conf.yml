@@ -4,11 +4,11 @@ server:
       port: 8443
 
       # Key store settings
-      keyStorePath: classpath:tls/keystore.jks
+      keyStorePath: classpath:tls/user-service-keystore.jks
       keyStorePassword: "notsecret"
 
       # Trust store settings
-      trustStorePath: classpath:tls/truststore.jks
+      trustStorePath: classpath:tls/test-truststore.jks
       trustStorePassword: "notsecret"
 
       # Whether or not CRL Distribution Points (CRLDP) support is enabled
@@ -43,11 +43,11 @@ logging:
 
 security:
   tlsAuthZ:
-    allowedClientDnRegex: "^.*\\bCN=homepage-service\\b(?:,.*|\\s*)$"
+    allowedClientDnRegex: "^.*\\bCN=Homepage Service\\b(?:,.*|\\s*)$"
 
   jwtVerification:
-    allowedSignerDnRegex: "^.*\\bCN=homepage-jwt-issuer\\b(?:,.*|\\s*)$"
-    truststoreResourcePath: "jwt/truststore.jks"
+    allowedSignerDnRegex: "^.*\\bCN=Homepage Service\\b(?:,.*|\\s*)$"
+    truststoreResourcePath: "jwt/test-truststore.jks"
     truststorePassphrase: "notsecret"
     truststoreAliases:
       - "root"

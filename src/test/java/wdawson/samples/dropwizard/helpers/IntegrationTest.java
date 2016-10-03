@@ -9,11 +9,15 @@ import io.dropwizard.util.Duration;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
+import org.junit.rules.RuleChain;
+import org.junit.rules.TestRule;
 import wdawson.samples.dropwizard.UserInfoApplication;
 import wdawson.samples.dropwizard.configuration.UserInfoConfiguration;
 import wdawson.samples.dropwizard.util.jwt.JwtIssuer;
 import wdawson.samples.dropwizard.util.jwt.dto.JwtClaims;
 import wdawson.samples.dropwizard.util.resources.ConfigurableURLStreamHandlerFactory;
+import wdawson.samples.revoker.RevokerApplication;
+import wdawson.samples.revoker.configuration.RevokerConfiguration;
 
 import javax.ws.rs.client.Client;
 import java.io.File;
@@ -33,9 +37,20 @@ import static io.dropwizard.testing.ResourceHelpers.resourceFilePath;
  */
 public class IntegrationTest {
 
-    @ClassRule
-    public static final DropwizardAppRule<UserInfoConfiguration> RULE =
+    protected static final DropwizardAppRule<UserInfoConfiguration> USER_INFO_APP_RULE =
             new DropwizardAppRule<>(UserInfoApplication.class, resourceFilePath("dropwizard/valid-conf.yml"));
+
+    private static final DropwizardAppRule<RevokerConfiguration> ROOT_REVOKER_APP_RULE =
+            new DropwizardAppRule<>(RevokerApplication.class, resourceFilePath("revoker/root-conf.yml"));
+
+    private static final DropwizardAppRule<RevokerConfiguration> INTERMEDIATE_REVOKER_APP_RULE =
+            new DropwizardAppRule<>(RevokerApplication.class, resourceFilePath("revoker/intermediate-conf.yml"));
+
+    @ClassRule
+    public static final TestRule RULE_CHAIN = RuleChain
+            .outerRule(ROOT_REVOKER_APP_RULE)
+            .around(INTERMEDIATE_REVOKER_APP_RULE)
+            .around(USER_INFO_APP_RULE);
 
     private static final char[] PASSPHRASE = "notsecret".toCharArray();
 
@@ -70,16 +85,16 @@ public class IntegrationTest {
         ConfigurableURLStreamHandlerFactory.unsetURLStringHandlerFactory();
     }
 
-    public Client getNewSecureClient() throws Exception {
+    protected Client getNewSecureClient() throws Exception {
         return getNewSecureClient("tls/homepage-service-keystore.jks");
     }
 
-    public Client getNewSecureClient(String keyStoreResourcePath) throws Exception {
+    protected Client getNewSecureClient(String keyStoreResourcePath) throws Exception {
         TlsConfiguration tlsConfiguration = new TlsConfiguration();
         tlsConfiguration.setKeyStorePath(new File(resourceFilePath(keyStoreResourcePath)));
         tlsConfiguration.setKeyStorePassword("notsecret");
 
-        tlsConfiguration.setTrustStorePath(new File(resourceFilePath("tls/truststore.jks")));
+        tlsConfiguration.setTrustStorePath(new File(resourceFilePath("tls/test-truststore.jks")));
         tlsConfiguration.setTrustStorePassword("notsecret");
 
         tlsConfiguration.setVerifyHostname(false);
@@ -91,7 +106,7 @@ public class IntegrationTest {
         configuration.setTlsConfiguration(tlsConfiguration);
         configuration.setTimeout(Duration.seconds(30));
 
-        return new JerseyClientBuilder(RULE.getEnvironment())
+        return new JerseyClientBuilder(USER_INFO_APP_RULE.getEnvironment())
                 .using(configuration)
                 .build(UUID.randomUUID().toString());
     }

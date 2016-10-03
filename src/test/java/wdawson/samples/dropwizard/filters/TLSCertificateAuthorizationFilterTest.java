@@ -32,7 +32,7 @@ public class TLSCertificateAuthorizationFilterTest {
 
     private static final char[] PASSPHRASE = "notsecret".toCharArray();
 
-    private static final String REG_EX = "^.*\\bCN=homepage-service\\b(?:,.*|\\s*)$";
+    private static final String REG_EX = "^.*\\bCN=Homepage Service\\b(?:,.*|\\s*)$";
 
     @Mock
     private HttpServletRequest servletRequest;
