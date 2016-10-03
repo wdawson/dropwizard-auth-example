@@ -105,6 +105,8 @@ public class IntegrationTest {
         JerseyClientConfiguration configuration = new JerseyClientConfiguration();
         configuration.setTlsConfiguration(tlsConfiguration);
         configuration.setTimeout(Duration.seconds(30));
+        configuration.setConnectionTimeout(Duration.seconds(30));
+        configuration.setConnectionRequestTimeout(Duration.seconds(30));
 
         return new JerseyClientBuilder(USER_INFO_APP_RULE.getEnvironment())
                 .using(configuration)
